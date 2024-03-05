@@ -1,0 +1,17 @@
+## Create virtual environment
+
+``` python -m venv search_engine ```
+
+## Activate virtual environment (from parent folder)
+
+``` .\search_engine\Scripts\activate ```
+
+## Install required libraries
+
+``` pip install version_requirements.txt  ```
+
+## Select kernel for Jupiter Notebook ( ipynb )
+
+From top right corner select ``` (parent_folder)/Scripts/python.exe ``` as kernel and run
+
+For python file use ``` python file_name ``` to execute
