@@ -1,2 +1,2 @@
-# from sentence_transformers import SentenceTransformer,util
-print(1)
+import torch
+print(torch.cuda.device_count())
