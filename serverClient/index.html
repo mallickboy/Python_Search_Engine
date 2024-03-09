@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Simple Web Page</title>
+</head>
+
+<body>
+    <h1>Enter your Data</h1>
+
+    <label for="data">Enter Data:</label><br>
+    <input type="text" id="data" name="data"><br><br>
+    <input type="submit" value="Submit" onclick="submitData()">
+
+    <div id="res"></div>
+
+    <script>
+        submitData = () => {
+            dataTosend = { data: document.getElementById('data').value }
+
+            url = 'http://localhost:8080/submit'
+            fetch(url, {
+                method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                headers: {
+                    'Content-Type': 'application/json'
+                    // 'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: JSON.stringify(dataTosend) // body data type must match "Content-Type" header
+            }).then(res =>
+                res.json()
+            ).then(responseArray => {
+                responseArray.forEach(obj => {
+                    // Create a new div element
+                    let newDiv = document.createElement('div');
+
+                    // Set innerHTML of the div element using the object properties
+                    newDiv.innerHTML = `<h1>${obj.title}</h1><p>${obj.desc}</p><img src="${obj.icon}" alt="${obj.title}">`;
+
+                    // Append the new div element to the container with id 'res'
+                    document.getElementById('res').appendChild(newDiv);
+                })
+                console.log(responseArray)
+            }
+            )
+        }
+    </script>
+</body>
+
+</html>
