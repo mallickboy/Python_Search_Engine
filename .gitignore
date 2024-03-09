@@ -1,4 +1,4 @@
 search_engine/*
 .env
 translator.ipynb
-mldata/*
+removed_data/*
