@@ -1,0 +1,102 @@
+body {    
+    margin-left: 160px;
+    margin-right: 76px;
+}
+
+#inputBox {
+    width: 600px;
+    height: 44px;
+    background: #fff;
+    border: 1px solid transparent;
+    box-shadow: 0 2px 5px 1px rgba(64,60,67,.16);
+    border-radius: 24px;
+    margin: 0 auto;
+    padding-left: 22px;
+}
+
+::placeholder {    
+    font-size: 16px;
+}
+
+input[type=text] {
+    color: #202124;
+    font-size: 16px;
+    font-family: arial, sans-serif;    
+}
+
+input:focus {
+    outline: none;
+}
+
+#searchBtn {
+    margin-left: 25px;
+    height: 30px;
+    width: 60px;
+    border-radius: 35%;
+    border-width: 1px;
+}
+
+a {
+    text-decoration: none;
+    color: #1a0dab;
+}
+
+.search-result-element {
+    margin-top: 20px;
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 10px;
+    text-decoration: none;    
+}
+
+.icon {
+    background-color: #f1f3f4;
+    border: 1px solid #dadce0;
+    border-radius: 50%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    height: 26px;
+    width: 26px;
+    margin-right: 15px;
+}
+
+.domain {
+    color: #202124;
+    font-size: 14px;    
+    font-family: arial, sans-serif;    
+}
+
+.link {
+    font-size: 12px;    
+    font-family: arial, sans-serif;
+    color: #4d5156;
+}
+
+.heading-div {
+    margin-bottom: 10px;
+}
+
+.heading {
+    font-family: arial, sans-serif;
+    font-size: 20px;
+    font-family: 400;    
+}
+
+.heading:hover {
+    text-decoration: underline;
+}
+
+.heading:visited {
+    color: #681da8;
+}
+
+.description {
+    color: #4d5156;
+    font-family: arial, sans-serif;
+    font-size: 14px;    
+}
