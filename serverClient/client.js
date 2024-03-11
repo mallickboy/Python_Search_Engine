@@ -13,7 +13,7 @@ async function postData(url, searchTopic) {
 document.getElementById("searchBtn").onclick = function() {
     const searchTopic = document.getElementById("inputBox").value;
 
-    postData("http://localhost:3000/data", {searchTopic})
+    postData("http://localhost:8080/submit",{ searchTopic:searchTopic})
      .then(searchResult => {
         populateMainDiv(searchResult)
      })
@@ -43,7 +43,9 @@ document.getElementById("searchBtn").onclick = function() {
 function populateMainDiv(searchResult) {
     const mainDivSelector = document.getElementById("mainDiv");
     searchResult.map((item) => {
-        const url = new URL(Object.values(item)[0]);
+        title=item['title']
+        link=item['link']
+        const url = new URL(Object.values(item)[1]);
         const domainParts = url.hostname.split('.');
 
         const baseURL = url.origin;
@@ -74,17 +76,18 @@ function populateMainDiv(searchResult) {
         childDivElement.innerHTML = `<br>
             <div class="search-result-element">       
                 <div class="flex-container">
-                    <div> <a href="${Object.values(item)[0]}" class="icon"> <img src="${googleFaviconGrabber+domain[2]}"> </a> </div>
+                    <div> <a href="${link}" class="icon"> <img src="${googleFaviconGrabber+domain[2]}"> </a> </div>
                     <div>
-                        <div> <a href="${Object.values(item)[0]}" class="domain"> ${domainParts[1]} </a> </div>
-                        <div> <a href="${Object.values(item)[0]}" class="link"> ${Object.values(item)[0]} </a> </div>
+                        <div> <a href="${link}" class="domain"> ${domainParts[1]} </a> </div>
+                        <div> <a href="${link}" class="link"> ${link} </a> </div>
                     </div>
                 </div>
                 <div class="heading-div">
-                    <a href="${Object.values(item)[0]}" class="heading"> ${Object.values(item)[1]} </a>
+                    <a href="${link}" class="heading"> ${title} </a>
                 </div>                  
                 <div class"description">   
-                    ${Object.values(item)[2]}
+                     This is a description
+
                 </div>
             </div>
         `;
