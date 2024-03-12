@@ -1,6 +1,66 @@
 import socket
 from urllib.parse import parse_qs
 import json
+import os
+from dotenv import load_dotenv
+import os
+load_dotenv()
+from pinecone import Pinecone 
+
+from sentence_transformers import SentenceTransformer
+model=SentenceTransformer("msmarco-distilbert-base-v3")
+
+def search_pinecone(model,query,table,namespace,res):
+    pc=Pinecone(api_key=os.getenv("PINECONE_KEY"),environment=os.getenv("PINECONE_ENVIRONMENT"))
+    index=pc.Index(table)
+    
+    result=index.query(
+        namespace=namespace,
+        vector=model.encode(query).tolist(),
+        top_k=res,
+        include_values=False,
+        include_metadata=True,
+        # filter={"genre": {"$eq": "action"}}
+    )
+    return result
+def get_title_and_link(obj):
+    return {'title': obj['metadata']['title'], 'link': obj['metadata']['link']}
+
+STATIC_DIR='./'
+def serve_static_file(client_socket, path):
+    # Determine the file path relative to the STATIC_DIR
+    file_path = os.path.join(STATIC_DIR, path.lstrip('/'))
+
+    # Check if the file exists
+    if os.path.exists(file_path) and os.path.isfile(file_path):
+        # Read the file content
+        with open(file_path, 'rb') as file:
+            content = file.read()
+
+        # Send HTTP response with the file content
+        http_response = "HTTP/1.1 200 OK\r\nContent-Type: {}\r\nContent-Length: {}\r\n\r\n".format(
+            get_content_type(file_path), len(content)).encode('utf-8') + content
+        client_socket.sendall(http_response)
+    else:
+        # If file not found, send a 404 response
+        http_response = "HTTP/1.1 404 Not Found\r\n\r\n"
+        client_socket.sendall(http_response.encode('utf-8'))
+
+def get_content_type(file_path):
+    # Map file extensions to MIME types
+    mime_types = {
+        '.html': 'text/html',
+        '.css': 'text/css',
+        '.js': 'application/javascript',
+        '.png': 'image/png',
+        '.jpg': 'image/jpeg',
+        '.gif': 'image/gif'
+        # Add more MIME types as needed
+    }
+    # Get the file extension
+    ext = os.path.splitext(file_path)[1]
+    # Lookup and return the corresponding MIME type
+    return mime_types.get(ext.lower(), 'application/octet-stream')
 
 results=[
   {
@@ -61,17 +121,23 @@ def handle_request(client_socket):
         parsed_data = json.loads(post_data)
         print(parsed_data)
         # Check if the 'data' key exists in the parsed data
-        if 'data' in parsed_data:
-            submitted_data = parsed_data['data']
+        if 'searchTopic' in parsed_data:
+            submitted_data = parsed_data['searchTopic']
         else:
             submitted_data = "No data submitted"
-
+        print("Submitteddata",submitted_data)
         # Send HTTP response with the submitted data
-        http_response = json.dumps(results)
+        objarray=search_pinecone(model,submitted_data,'search','ns1',5)['matches']
+        result_array = [get_title_and_link(o) for o in objarray]
+
+        http_response = json.dumps(result_array)
         client_socket.sendall(http_response.encode('utf-8'))
 
+   
+    else:
+        # Check if the requested path corresponds to a static file
+        serve_static_file(client_socket, path)
     client_socket.close()
-
 def main():
     host = '127.0.0.1'
     port = 8080
