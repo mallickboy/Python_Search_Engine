@@ -4,6 +4,8 @@
 
 ## Activate virtual environment (from parent folder)
 
+```Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass```
+
 ``` .\search_engine\Scripts\activate ```
 
 ## Install required libraries
