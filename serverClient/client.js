@@ -1,4 +1,5 @@
 async function postData(url, searchTopic) {
+    skeletonLoader();
     const response = await fetch(url, {
         method: "POST",
         headers: {
@@ -8,6 +9,36 @@ async function postData(url, searchTopic) {
     });
 
     return await response.json();
+}
+
+function skeletonLoader() {
+    const mainDivSelector = document.getElementById("mainDiv");
+    mainDivSelector.innerHTML = "";
+    
+    for (let i = 0; i < 5; i++){
+        const childDivElement = document.createElement("div");
+        childDivElement.innerHTML = `<br>
+            <div class="search-result-element">       
+                <div class="flex-container">
+                    <div> <a href="#" class="icon skeleton"> <img src="#"> </a> </div>
+                    <div>
+                        <div class="skeleton skeleton-domain">  </div>
+                        <div class="skeleton skeleton-link">  </div>
+                    </div>
+                </div>
+                <div class="heading-div skeleton skeleton-heading">
+                    
+                </div>                  
+                <div class="description skeleton skeleton-description">                
+
+                </div>            
+                <div class="description skeleton skeleton-description">                
+
+                </div>
+            </div>
+        `;
+        mainDivSelector.appendChild(childDivElement);
+    }     
 }
 
 document.getElementById("searchBtn").onclick = function() {
@@ -42,9 +73,11 @@ document.getElementById("searchBtn").onclick = function() {
 
 function populateMainDiv(searchResult) {
     const mainDivSelector = document.getElementById("mainDiv");
+    mainDivSelector.innerHTML = "";
     searchResult.map((item) => {
         title=item['title']
         link=item['link']
+        desc = item['desc']
         const url = new URL(Object.values(item)[1]);
         const domainParts = url.hostname.split('.');
 
@@ -85,9 +118,8 @@ function populateMainDiv(searchResult) {
                 <div class="heading-div">
                     <a href="${link}" class="heading"> ${title} </a>
                 </div>                  
-                <div class"description">   
-                     This is a description
-
+                <div class="description">   
+                     ${desc.substring(0, 225) + " ..."}
                 </div>
             </div>
         `;
