@@ -65,6 +65,45 @@ a {
     margin-right: 15px;
 }
 
+.skeleton {
+    animation: skeleton-loading 1s linear infinite alternate;
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-color: hsl(200, 20%, 80%);
+    }
+    100% {
+        background-color: hsl(200, 20%, 95%);
+    }
+}
+
+.skeleton-domain {
+    height: 14px;
+    width: 8vw;
+    border-radius: 0.25rem;
+    margin-bottom: 1px;
+}
+
+.skeleton-link {
+    height: 12px;
+    width: 15vw;
+    border-radius: 0.25rem;
+}
+
+.skeleton-heading {
+    height: 20px;
+    width: 30%;
+    border-radius: 0.25rem;
+}
+
+.skeleton-description {
+    height: 14px;
+    width: 100%;
+    border-radius: 0.25rem;
+    margin-bottom: 0.25rem;
+}
+
 .domain {
     color: #202124;
     font-size: 14px;    

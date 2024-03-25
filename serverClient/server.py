@@ -23,8 +23,10 @@ def search_pinecone(model,query,table,namespace,res):
         # filter={"genre": {"$eq": "action"}}
     )
     return result
-def get_title_and_link(obj):
-    return {'title': obj['metadata']['title'], 'link': obj['metadata']['link']}
+def get_title_and_link_and_desc(obj):    
+    descList = obj['metadata']['desc'].split('|@|')
+    desc = ' '.join(descList)    
+    return {'title': obj['metadata']['title'], 'link': obj['metadata']['link'], 'desc': desc}
 
 STATIC_DIR='./'
 def serve_static_file(client_socket, path):
@@ -127,10 +129,17 @@ def handle_request(client_socket):
             submitted_data = "No data submitted"
         print("Submitteddata",submitted_data)
         # Send HTTP response with the submitted data
-        objarray=search_pinecone(model,submitted_data,'search','ns1',5)['matches']
-        result_array = [get_title_and_link(o) for o in objarray]
+        objarray=search_pinecone(model,submitted_data,'search','ns2',5)['matches']
+        result_array = [get_title_and_link_and_desc(o) for o in objarray]
 
-        http_response = json.dumps(result_array)
+        http_response_body = json.dumps(result_array)
+        http_response = (
+            'HTTP/1.1 200 OK\r\n' + 
+            'Content-Type: application/json\r\n' +
+            f'Content-Length: {len(http_response_body)}\r\n' +
+            '\r\n' +
+            http_response_body
+        )
         client_socket.sendall(http_response.encode('utf-8'))
 
    
