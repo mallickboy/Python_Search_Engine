@@ -1,5 +1,6 @@
 import socket
 from urllib.parse import parse_qs
+import threading
 import json
 import os
 from dotenv import load_dotenv
@@ -9,7 +10,7 @@ from pinecone import Pinecone
 
 from sentence_transformers import SentenceTransformer
 model=SentenceTransformer("msmarco-distilbert-base-v3")
-
+public_key_server,private_key_server="",""
 def search_pinecone(model,query,table,namespace,res):
     pc=Pinecone(api_key=os.getenv("PINECONE_KEY"),environment=os.getenv("PINECONE_ENVIRONMENT"))
     index=pc.Index(table)
@@ -22,7 +23,15 @@ def search_pinecone(model,query,table,namespace,res):
         include_metadata=True,
         # filter={"genre": {"$eq": "action"}}
     )
-    return result
+    prev=[]
+    new_res=[]
+    for i,res in    enumerate(result['matches']): 
+        show=res['metadata']
+        title=show['title']
+        if title not in prev:
+            new_res.append(res)
+            prev.append(title)
+    return new_res
 def get_title_and_link_and_desc(obj):    
     descList = obj['metadata']['desc'].split('|@|')
     desc = ' '.join(descList)    
@@ -89,8 +98,9 @@ results=[
 
 
 def handle_request(client_socket):
+    print("handlerequest")
     request_data = client_socket.recv(1024).decode('utf-8')
-    # print(request_data)
+    print(request_data)
     if not request_data:
         return
 
@@ -105,7 +115,10 @@ def handle_request(client_socket):
         content=IndexHtm.read()
         http_response = "HTTP/1.1 200 OK" +'\n'+content
         client_socket.sendall(http_response.encode('utf-8'))
-
+    elif method == 'GET' and path == '/public-key':
+        public_key_data = load_public_key()
+        http_response = f"HTTP/1.1 200 OK\r\nContent-Length: {len(public_key_data)}\r\nContent-Type: text/plain\r\n\r\n{public_key_data}"
+        client_socket.sendall(http_response.encode('utf-8'))
 
         
     # If the method is POST and the path is '/submit', process the submitted data
@@ -129,7 +142,7 @@ def handle_request(client_socket):
             submitted_data = "No data submitted"
         print("Submitteddata",submitted_data)
         # Send HTTP response with the submitted data
-        objarray=search_pinecone(model,submitted_data,'search','ns2',5)['matches']
+        objarray=search_pinecone(model,submitted_data,'search','ns2',50)# matches
         result_array = [get_title_and_link_and_desc(o) for o in objarray]
 
         http_response_body = json.dumps(result_array)
@@ -148,13 +161,20 @@ def handle_request(client_socket):
         serve_static_file(client_socket, path)
     client_socket.close()
 def main():
-    host = '127.0.0.1'
+    
+    # generateKeys()
+    hostname = socket.gethostname()
+
+# Get the IP address associated with the hostname
+    ip_address = socket.gethostbyname(hostname)
+
+    host = ip_address
     port = 8080
 
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     server_socket.bind((host, port))
-    server_socket.listen(5)
+    server_socket.listen()
 
     print(f"Server is listening on {host}:{port}")
 
@@ -162,7 +182,9 @@ def main():
         while True:
             client_socket, client_address = server_socket.accept()
             print(f"Received connection from {client_address}")
-            handle_request(client_socket)
+            client_thread = threading.Thread(target=handle_request, args=(client_socket,))
+            client_thread.start()
+            # handle_request(client_socket)
     except KeyboardInterrupt:
         print("Shutting down the server.")
         server_socket.close()
