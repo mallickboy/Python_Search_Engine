@@ -44,7 +44,7 @@ function skeletonLoader() {
 document.getElementById("searchBtn").onclick = function() {
     const searchTopic = document.getElementById("inputBox").value;
 
-    postData("http://localhost:8080/submit",{ searchTopic:searchTopic})
+    postData("/submit",{ searchTopic:searchTopic})
      .then(searchResult => {
         populateMainDiv(searchResult)
      })
