@@ -2,15 +2,19 @@ import socket
 from urllib.parse import parse_qs
 import threading
 import json
+import base64
+from base64 import b64decode
 import os
 from dotenv import load_dotenv
 import os
 load_dotenv()
 from pinecone import Pinecone 
+from knapsack import knapsack 
 
 from sentence_transformers import SentenceTransformer
 model=SentenceTransformer("msmarco-distilbert-base-v3")
-public_key_server,private_key_server="",""
+public_key_server,private_key_server,ks=None,None,None
+
 def search_pinecone(model,query,table,namespace,res):
     pc=Pinecone(api_key=os.getenv("PINECONE_KEY"),environment=os.getenv("PINECONE_ENVIRONMENT"))
     index=pc.Index(table)
@@ -73,28 +77,24 @@ def get_content_type(file_path):
     # Lookup and return the corresponding MIME type
     return mime_types.get(ext.lower(), 'application/octet-stream')
 
-results=[
-  {
-    "icon": "https://example.com/icon1.png",
-    "domain": "example.com",
-    "title": "Example Website",
-    "desc": "This is an example description for the first website."
-  },
-  {
-    "icon": "https://example.org/icon2.png",
-    "domain": "example.org",
-    "title": "Another Example",
-    "desc": "This is another example description for the second website."
-  },
-  {
-    "icon": "https://example.net/icon3.png",
-    "domain": "example.net",
-    "title": "Yet Another Example",
-    "desc": "This is yet another example description for the third website."
-  }
-]
+def generateKeys():
+    global public_key_server,private_key_server,ks
+    ks=knapsack()
+    private_key_server, modulus, public_key_server = ks.private_public_key(8, 8)
+    
 
 
+def encrypt(data,publicKey):
+    global ks
+    encrypted_text = ks.encryption(data, publicKey)
+    return encrypted_text
+
+
+ 
+def decrypt(client_encrypted_data):
+    global ks
+    decrypted_text = ks.decryption(client_encrypted_data)
+    return decrypted_text
 
 
 def handle_request(client_socket):
@@ -116,8 +116,8 @@ def handle_request(client_socket):
         http_response = "HTTP/1.1 200 OK" +'\n'+content
         client_socket.sendall(http_response.encode('utf-8'))
     elif method == 'GET' and path == '/public-key':
-        public_key_data = load_public_key()
-        http_response = f"HTTP/1.1 200 OK\r\nContent-Length: {len(public_key_data)}\r\nContent-Type: text/plain\r\n\r\n{public_key_data}"
+        public_key_server_base64=json.dumps(public_key_server)
+        http_response = f"HTTP/1.1 200 OK\r\nContent-Length: {len(public_key_server_base64)}\r\nContent-Type: text/plain\r\n\r\n{public_key_server_base64}"
         client_socket.sendall(http_response.encode('utf-8'))
 
         
@@ -132,27 +132,34 @@ def handle_request(client_socket):
         content_length = int(request_data[content_length_start:content_length_end].strip())
         end_of_data = request_data.find('\r\n\r\n')
         post_data = request_data[end_of_data+4:]
+       
         print("post dta",post_data)
-        parsed_data = json.loads(post_data)
+        parsed_data = json.loads(post_data,strict=False)
         print(parsed_data)
         # Check if the 'data' key exists in the parsed data
-        if 'searchTopic' in parsed_data:
-            submitted_data = parsed_data['searchTopic']
-        else:
-            submitted_data = "No data submitted"
+        Client_public_key=parsed_data['publicKey']
+        submitted_data = decrypt(parsed_data['searchTopic'])
+        
+            
         print("Submitteddata",submitted_data)
         # Send HTTP response with the submitted data
         objarray=search_pinecone(model,submitted_data,'search','ns2',50)# matches
         result_array = [get_title_and_link_and_desc(o) for o in objarray]
 
         http_response_body = json.dumps(result_array)
+
+        print("Public Key of Client",Client_public_key)
+        encryptedData=encrypt(http_response_body,Client_public_key)
         http_response = (
             'HTTP/1.1 200 OK\r\n' + 
             'Content-Type: application/json\r\n' +
-            f'Content-Length: {len(http_response_body)}\r\n' +
+            f'Content-Length: {len(encryptedData)}\r\n' +
             '\r\n' +
-            http_response_body
+            encryptedData
         )
+        
+
+        
         client_socket.sendall(http_response.encode('utf-8'))
 
    
@@ -162,7 +169,7 @@ def handle_request(client_socket):
     client_socket.close()
 def main():
     
-    # generateKeys()
+    generateKeys()
     hostname = socket.gethostname()
 
 # Get the IP address associated with the hostname
@@ -184,7 +191,7 @@ def main():
             print(f"Received connection from {client_address}")
             client_thread = threading.Thread(target=handle_request, args=(client_socket,))
             client_thread.start()
-            # handle_request(client_socket)
+            
     except KeyboardInterrupt:
         print("Shutting down the server.")
         server_socket.close()
