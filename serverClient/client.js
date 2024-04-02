@@ -193,6 +193,7 @@ fetch('/public-key').then(res=>res.json()).then(publicKey => {
 
 async function postData(url, searchTopic) {
     skeletonLoader();
+    if(public_key_server==null) return
     const searchTopicEnc =  ks.encryption((JSON.stringify(searchTopic)), public_key_server);  
     console.log("Encrypted search",searchTopicEnc)
     // Create the request body with encrypted searchTopic and public key
@@ -260,10 +261,33 @@ function skeletonLoader() {
         mainDivSelector.appendChild(childDivElement);
     }     
 }
-
+var searchResult
+const searchQuery = document.getElementById("inputBox");
+searchQuery.addEventListener('keydown', function(event) {
+    // Check if the key pressed is Enter (key code 13)
+    if (event.keyCode === 13) {
+        // Prevent the default action (form submission, page reload, etc.)
+        event.preventDefault();
+        const searchTopic = document.getElementById("inputBox").value;
+        console.log("Searching : ",searchTopic);
+        postData("/submit",{ searchTopic:searchTopic})
+         .then(searchResult => {
+            console.log("search result before Decryption",searchResult)
+            
+            decryptedSearchResult= ks.decryption(searchResult) 
+    
+            decryptedSearchResult=JSON.parse(decryptedSearchResult)
+            
+            populateMainDiv(decryptedSearchResult)
+         })
+         .catch(error => {
+            console.error("Error: ", error);
+         });
+    }
+});
 document.getElementById("searchBtn").onclick = function() {
     const searchTopic = document.getElementById("inputBox").value;
-
+    console.log("Searching : ",searchTopic);
     postData("/submit",{ searchTopic:searchTopic})
      .then(searchResult => {
         console.log("search result before Decryption",searchResult)
@@ -278,7 +302,19 @@ document.getElementById("searchBtn").onclick = function() {
         console.error("Error: ", error);
      });
 };
-
+window.addEventListener('beforeunload', function(event) {
+    fetch("/exit", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify("Client left")
+    });
+    // var ws = new WebSocket('ws://localhost:8080'); // Replace with your server's WebSocket URL
+    // ws.onopen = function() {
+    //     ws.send('TabClosed'); // Send a message to the server
+    // };
+});
 /*const searchResult = [
     {
         "link": "https://www.javatpoint.com/array-in-java",
@@ -335,14 +371,14 @@ function populateMainDiv(searchResult) {
         childDivElement.innerHTML = `<br>
             <div class="search-result-element">       
                 <div class="flex-container">
-                    <div> <a href="${link}" class="icon"> <img src="${googleFaviconGrabber+domain[2]}"> </a> </div>
+                    <div> <a href="${link}" class="icon" target="_blank"> <img src="${googleFaviconGrabber+domain[2]}"> </a> </div>
                     <div>
-                        <div> <a href="${link}" class="domain"> ${domainParts[1]} </a> </div>
-                        <div> <a href="${link}" class="link"> ${link} </a> </div>
+                        <div> <a href="${link}" class="domain" target="_blank"> ${domainParts[1]} </a> </div>
+                        <div> <a href="${link}" class="link" target="_blank"> ${link} </a> </div>
                     </div>
                 </div>
                 <div class="heading-div">
-                    <a href="${link}" class="heading"> ${title} </a>
+                    <a href="${link}" class="heading" target="_blank"> ${title} </a>
                 </div>                  
                 <div class="description">   
                      ${desc.substring(0, 225) + " ..."}
