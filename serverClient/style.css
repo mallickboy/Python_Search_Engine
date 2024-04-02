@@ -2,7 +2,9 @@ body {
     margin-left: 160px;
     margin-right: 76px;
 }
-
+::-webkit-scrollbar {
+    display: none;
+}
 #inputBox {
     width: 600px;
     height: 44px;
