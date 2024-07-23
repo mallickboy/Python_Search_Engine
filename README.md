@@ -25,7 +25,8 @@ For python file use ``` python file_name ``` to execute
 <h1 align="center">
 Output View
 </h1>
-**Pinecone Side Vectors** 
+
+**Pinecone Side Vectors :**
 
 ![pinecone](https://github.com/user-attachments/assets/0bd8a37f-510c-471e-9206-76135b905bd1)
 
