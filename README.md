@@ -26,6 +26,7 @@ For python file use ``` python file_name ``` to execute
 Output View
 </h1>
 **Pinecone Side Vectors** 
+
 ![pinecone](https://github.com/user-attachments/assets/0bd8a37f-510c-471e-9206-76135b905bd1)
 
 **Client Side Search Results :**
