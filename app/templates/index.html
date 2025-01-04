@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Search Engine</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <input type="text" name="data" placeholder="Type here..." id="inputBox">
+    <button id="searchBtn" type="button">Search</button>
+    <br>
+    <div id="mainDiv">
+
+    </div>
+    <script src="{{ url_for('static', filename='js/client.js') }}"></script>
+</body>
+
+</html>
