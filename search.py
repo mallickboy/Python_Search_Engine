@@ -1,7 +1,5 @@
-import json
 import os
 from dotenv import load_dotenv
-import os
 load_dotenv()
 from pinecone import Pinecone 
 
