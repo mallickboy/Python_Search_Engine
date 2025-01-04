@@ -1,0 +1,5 @@
+Flask==3.0.3
+flask-cors==5.0.0
+python-dotenv==1.0.1
+pinecone-client==5.0.1
+sentence-transformers==3.3.1
