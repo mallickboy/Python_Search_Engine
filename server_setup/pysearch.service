@@ -1,0 +1,19 @@
+[Unit]
+Description=Gunicorn instance for PySearch  # put it at  sudo nano /etc/systemd/system/pysearch.service  for gunicorn
+After=network.target
+
+# Setup to run gunicorn at system start
+
+[Service]
+User=mallickboy
+Group=www-data
+WorkingDirectory=/home/mallickboy/pysearch
+ExecStart=/home/mallickboy/pysearch/pysearch/bin/gunicorn -w 2 -b 0.0.0.0:8000 app:app      # 2 workers 
+
+# Optional: Standard output/error redirection to logs
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=gunicorn
+
+[Install]
+WantedBy=multi-user.target

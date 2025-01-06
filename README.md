@@ -1,26 +1,103 @@
 <h1 align="center">
-Python Search Engine 2.0
+Python Search Engine 2.0 Server setup
 </h1>
 
 ### Create virtual environment
 
-``` python -m venv search_engine ```
+``` mkdir pysearch  ```
+
+``` cd pysearch  ```
+
+``` sudo apt install python3.9 python3.9-venv python3.9-distutils ```
+
+``` python3.9 -m venv pysearch ```
 
 ### Activate virtual environment (from parent folder)
 
-```Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass```
+```Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass```   &
 
-``` .\search_engine\Scripts\activate ```
+``` .\search_engine\Scripts\activate ``` or
+
+``` source pysearch/bin/activate ```
+
+### Install PyTorch (  lightweight CPU version only )
+
+``` pip install torch --index-url https://download.pytorch.org/whl/cpu  ```
 
 ### Install required libraries
 
-``` pip install version_requirements.txt  ```
+``` pip install -r requirements.txt  ```
 
-### Select kernel for Jupiter Notebook ( ipynb )
+### Open firewall & update inbound port 8000 in Azure
 
-From top right corner select ``` (parent_folder)/Scripts/python.exe ``` as kernel and run
+``` sudo ufw enable ```
 
-For python file use ``` python file_name ``` to execute
+``` sudo ufw allow 8000 ```
+
+``` sudo ufw status ```
+
+### Run and Test 
+
+``` python app.py  ```
+
+Visit http://{your_server_ip}:8000
+
+
+<h2 align="center">
+Adding SSL, NGINX and deployment using GUNICORNN
+</h1>
+
+### Deploy the site using gunicorn
+
+``` gunicorn -w 4 -b 0.0.0.0:8000 app:app ```
+
+``` sudo nano /etc/systemd/system/pysearch.service ``` paste code of server_setup/pysearch.service
+
+``` sudo systemctl daemon-reload ```
+
+``` sudo systemctl restart pysearch ```
+
+``` sudo systemctl enable pysearch ```
+
+``` sudo systemctl status pysearch ```
+
+### Setup Domain/ Sub-Domain
+
+Add New record in Advanced DNS in domain provider
+
+``` Type = "A Record"   Host= "pysearch"    Value = "server public ip"  TTL = "Automatic" ```  ( Sub-Domain )
+
+``` Type = "A Record"   Host= "@"    Value = "server public ip"  TTL = "Automatic" ```         ( Domain )
+
+### Installing SSL certificate
+
+``` sudo apt install certbot python3-certbot-nginx ```
+
+``` sudo certbot --nginx -d pysearch.mallickboy.com ```
+
+``` sudo certbot certificates ```
+
+``` sudo systemctl status certbot.timer ```  check auto renewal
+
+### Set-Up NGINX
+
+``` sudo nano /etc/nginx/sites-available/pysearch.mallickboy.com  ```  (copy contents of server_setup/pysearch.mallickboy.com)
+
+``` sudo nano /etc/nginx/sites-available/default  ```  (copy contents of server_setup/default)
+
+``` sudo ln -s /etc/nginx/sites-available/pysearch.mallickboy.com /etc/nginx/sites-enabled/ ```  
+
+``` sudo nginx -t  ```
+
+``` sudo systemctl reload nginx ```
+
+``` sudo systemctl restart nginx ```
+
+### Visit 
+
+[ https://pysearch.mallickboy.com ](https://pysearch.mallickboy.com)
+
+
 
 <h1 align="center">
 Output View
