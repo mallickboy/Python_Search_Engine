@@ -2,11 +2,19 @@
 Python Search Engine 2.0 Server setup
 </h1>
 
-### Create virtual environment
+### Pull the code
 
 ``` mkdir pysearch  ```
 
 ``` cd pysearch  ```
+
+``` git clone https://github.com/mallickboy/Python_Search_Engine.git ```
+
+``` cd Python_Search_Engine ```
+
+``` git checkout version2.0 ```
+
+### Create virtual environment 
 
 ``` sudo apt install python3.9 python3.9-venv python3.9-distutils ```
 
