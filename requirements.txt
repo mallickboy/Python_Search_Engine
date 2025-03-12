@@ -3,6 +3,9 @@ torch>=2.0.0
 Flask>=3.1.0
 flask-cors>=5.0.0
 python-dotenv>=1.0.0
-pinecone-client>=5.0.1
+pinecone-client>=5.0.1      # depreciated
 sentence-transformers>=3.3.1
 gunicorn>=23.0.0
+django 
+django-cors-headers
+pinecone

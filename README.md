@@ -44,9 +44,15 @@ Python Search Engine 2.0 Server setup
 
 ``` sudo ufw status ```
 
-### Run and Test 
+### Run and Test Django Server
 
-``` python app.py  ```
+``` cd django_pysearch ```
+
+``` python manage.py runserver ```
+
+##### For server deployment using Flask Version to ruduce RAM usage
+
+``` python app.py  ```   
 
 Visit http://{your_server_ip}:8000
 
@@ -55,7 +61,7 @@ Visit http://{your_server_ip}:8000
 Adding SSL, NGINX and deployment using GUNICORNN
 </h1>
 
-### Deploy the site using gunicorn
+### Deploy the site using gunicorn (Using Flask version for low RAM use)
 
 ``` gunicorn -w 4 -b 0.0.0.0:8000 app:app ```
 
