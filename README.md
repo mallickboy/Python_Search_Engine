@@ -1,6 +1,16 @@
 <h1 align="center">
-Python Search Engine 2.0 Server setup
+Python Search Engine 1.5 Django Server setup
 </h1>
+
+This repository contains both the **Django** and the later **Flask** versions of the Python Search Engine.  
+
+- Initially, the project was built using **Django** (version 1.5).  
+- Later, to minimize server resource usage, a **Flask-based version (2.0)** was created, optimized for low RAM usage, and deployed on Azure.  
+- This repository now includes:
+  - The **Django version (1.5)**
+  - The **Flask version (2.0)** along with its Azure deployment setup.  
+
+This allows flexibility in choosing between Django and Flask based on resource constraints and deployment needs.
 
 ### Pull the code
 
