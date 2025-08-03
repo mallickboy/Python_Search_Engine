@@ -1,0 +1,33 @@
+name: pysearch
+base: core22
+version: '1.4'
+summary: Python Search Engine (stable-strict)
+description: |
+  A lightwaight snap package of Python Search Engine for easy and fast server side deployment.
+
+grade: stable
+confinement: strict
+
+parts: 
+  pysearch: 
+    plugin: python
+    source: .
+    python-requirements: 
+      - requirements.txt
+    override-build: |
+      craftctl default
+      mkdir -p $SNAPCRAFT_PART_INSTALL/pysearch-src
+      cp -r pysearch/*.py pysearch/templates pysearch/static $SNAPCRAFT_PART_INSTALL/pysearch-src
+      chmod +x start-pysearch
+      install -m755 start-pysearch $SNAPCRAFT_PART_INSTALL/bin/start-pysearch
+
+apps:
+  pysearch: 
+    command: bin/start-pysearch
+    plugs:
+      - network
+      - network-bind
+      - home
+    environment:
+      PYTHONPATH: $SNAP/pysearch-src
+      JOBLIB_TEMP_FOLDER: $SNAP_USER_COMMON/joblib

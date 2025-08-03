@@ -1,0 +1,5 @@
+#!/bin/sh
+export PYTHONPATH=$SNAP/pysearch-src
+cd "$SNAP/pysearch-src"
+exec python3 main.py "$@"
+
