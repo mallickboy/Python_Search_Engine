@@ -7,13 +7,12 @@ PySearch is a fast, efficient, and easily deployable Python Search Engine packag
 
 ## 📦 Snap Info
 
-Two confinement modes are provided:
+PySearch is available as a Snap package in two confinement modes:
 
-| Version | Confinement | Description                        |
-|---------|-------------|------------------------------------|
-| `1.4`   | `strict`     | More secure and sandboxed, but slightly slower due to restricted access |
-| `1.3`   | `devmode`    | Faster, with broader system access but not fully sandboxed |
-
+| Version | Confinement | Description                                                                                              | Download Link |
+|---------|-------------|----------------------------------------------------------------------------------------------------------|---------------|
+| `1.4`   | `strict`    | Secure and sandboxed. Recommended for production use. May have some access limitations.                  | [Download](https://drive.google.com/file/d/1c9F2buxxc083r2wCDsyUP-KapKMfsiZw/view?usp=sharing) |
+| `1.3`   | `devmode`   | More permissive (less secure), useful for development, debugging, or local testing.                      | [Download](https://drive.google.com/file/d/11Krzo-v8Fy4MFgLLY1vMbmavyVNLVunG/view?usp=sharing) |
 ---
 
 ## 🔧 Installation
