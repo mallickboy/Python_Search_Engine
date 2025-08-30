@@ -1,3 +1,14 @@
-__pycache__
+# Environment files
+.env
+.venv/
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Snap dependencies to ignore
 common
 installers
