@@ -44,6 +44,12 @@ Python Search Engine 2.0 Server setup
 
 ``` sudo ufw status ```
 
+### Add pinecone API key
+```bash
+PINECONE_KEY=""
+PINECONE_ENVIRONMENT=""
+```
+
 ### Run and Test 
 
 ``` python app.py  ```
