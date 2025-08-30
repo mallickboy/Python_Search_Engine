@@ -54,6 +54,12 @@ This allows flexibility in choosing between Django and Flask based on resource c
 
 ``` sudo ufw status ```
 
+### Add pinecone API key
+```bash
+PINECONE_KEY=""
+PINECONE_ENVIRONMENT=""
+```
+
 ### Run and Test Django Server
 
 ``` cd django_pysearch ```

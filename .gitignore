@@ -1,3 +1,11 @@
-__pycache__/
-.venv
+# Environment files
+.env
+.venv/
+venv/
 pysearch
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
