@@ -8,3 +8,8 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
+
+# Other ignorable filess
+*.ipynb
+*.json
+*.csv
