@@ -12,6 +12,12 @@
 
 ``` pip install version_requirements.txt  ```
 
+### Add pinecone API key
+```bash
+PINECONE_KEY=""
+PINECONE_ENVIRONMENT=""
+```
+
 ## Select kernel for Jupiter Notebook ( ipynb )
 
 From top right corner select ``` (parent_folder)/Scripts/python.exe ``` as kernel and run

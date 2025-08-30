@@ -1,5 +1,16 @@
-search_engine/*
+# Environment files
 .env
+.venv/
+venv/
+search_engine/*
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Other ignorable files
 translator.ipynb
 removed_data/*
 webcrawl/*
