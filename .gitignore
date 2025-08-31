@@ -13,3 +13,4 @@ __pycache__/
 *.ipynb
 *.json
 *.csv
+app_flask/
