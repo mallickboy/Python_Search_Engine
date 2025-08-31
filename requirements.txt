@@ -1,8 +1,8 @@
 --extra-index-url https://download.pytorch.org/whl/cpu
 torch==2.8.0+cpu
-Flask==3.1.2
-flask-cors==6.0.1
+fastapi==0.116.1
 python-dotenv==1.1.1
 pinecone==7.3.0
 sentence-transformers==5.1.0
+uvicorn==0.35.0
 gunicorn==23.0.0

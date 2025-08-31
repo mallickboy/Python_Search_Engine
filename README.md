@@ -2,6 +2,8 @@
 Python Search Engine 2.0 Server setup
 </h1>
 
+---
+
 ### Pull the code
 
 ``` mkdir pysearch  ```
@@ -12,21 +14,15 @@ Python Search Engine 2.0 Server setup
 
 ``` cd Python_Search_Engine ```
 
-``` git checkout version2.0 ```
+``` git checkout version3.0 ```
 
-### Create virtual environment 
+### Create virtual environment (Recommended Python 3.10)
 
-``` sudo apt install python3.9 python3.9-venv python3.9-distutils ```
-
-``` python3.9 -m venv pysearch ```
+``` python -m venv pysearch ```
 
 ### Activate virtual environment (from parent folder)
 
-```Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass```   &
-
-``` .\search_engine\Scripts\activate ``` or
-
-``` source pysearch/bin/activate ```
+``` source .venv/bin/activate ```
 
 ### Install PyTorch (  lightweight CPU version only )
 
@@ -52,7 +48,7 @@ PINECONE_ENVIRONMENT=""
 
 ### Run and Test 
 
-``` python app.py  ```
+``` python -m app.main  ```
 
 Visit http://{your_server_ip}:8000
 
@@ -63,7 +59,7 @@ Adding SSL, NGINX and deployment using GUNICORNN
 
 ### Deploy the site using gunicorn
 
-``` gunicorn -w 4 -b 0.0.0.0:8000 app:app ```
+``` gunicorn -w 2 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000 app.main:app --timeout 120 ```
 
 ``` sudo nano /etc/systemd/system/pysearch.service ``` paste code of server_setup/pysearch.service
 

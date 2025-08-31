@@ -14,5 +14,3 @@ __pycache__/
 *.json
 *.csv
 app_flask/
-*.backup
-model_cache/

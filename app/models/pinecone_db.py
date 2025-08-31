@@ -1,10 +1,11 @@
 import time
 from pinecone import Pinecone
 from sentence_transformers import SentenceTransformer
-from app.config import PINECONE_KEY, PINECONE_ENVIRONMENT, PINECONE_INDEX, SENTENCE_TRANSFORMER
+from app.config import PINECONE_KEY, PINECONE_ENVIRONMENT, PINECONE_INDEX, SENTENCE_TRANSFORMER, MODEL_CACHE, PINECONE_NAMESPACE
 
 # Initialize model once per worker
-MODEL = SentenceTransformer(SENTENCE_TRANSFORMER)
+# MODEL = SentenceTransformer(SENTENCE_TRANSFORMER)
+MODEL = SentenceTransformer(SENTENCE_TRANSFORMER, cache_folder=MODEL_CACHE)
 
 
 def init_pinecone_index(retries=3, delay=2):
