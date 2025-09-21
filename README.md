@@ -1,8 +1,8 @@
 <h1 align="center">
-Python Search Engine 2.0 Server setup
+Python Search Engine 3.0 Server setup
 </h1>
 
-# New plan
+# New plan for Version 3
 
 [User] → [Go Backend Pod(s)]
                    ↓
@@ -13,9 +13,6 @@ Python Search Engine 2.0 Server setup
                [Pinecone / Local Vector DB / Kafka]
                    ↓
            [Go Backend → User]
-
-
-
 
 ### Pull the code
 
