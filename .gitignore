@@ -1,0 +1,8 @@
+*__pycache__
+*.venv
+*venv
+
+## ignore development kits
+dev_worker
+*.env
+ignore*

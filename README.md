@@ -2,31 +2,54 @@
 Python Search Engine 2.0 Server setup
 </h1>
 
+# New plan
+
+[User] → [Go Backend Pod(s)]
+                   ↓
+         [Redis Cache (StatefulSet)]
+                   ↔
+         [FastAPI Embedding DaemonSet (1 per Node)]
+                   ↓
+               [Pinecone / Local Vector DB / Kafka]
+                   ↓
+           [Go Backend → User]
+
+
+
+
 ### Pull the code
 
 ``` mkdir pysearch  ```
-
 ``` cd pysearch  ```
-
 ``` git clone https://github.com/mallickboy/Python_Search_Engine.git ```
-
 ``` cd Python_Search_Engine ```
+``` git checkout version3.0 ```
+``` cd server ```
 
-``` git checkout version2.0 ```
-
+### Download appropriate python 3.10 version
+Download and install from 
+```bash
+https://www.python.org/downloads/source/                (or)
+https://www.python.org/ftp/python/3.10.18/Python-3.10.18.tgz
+```
+Extract & install
+```bash
+tar xzf Python-3.10.18.tgz
+cd Python-3.10.18
+sudo ./configure --enable-optimizations
+sudo ./configure --enable-optimizations
+python3.10 --version
+```
 ### Create virtual environment 
 
-``` sudo apt install python3.9 python3.9-venv python3.9-distutils ```
-
-``` python3.9 -m venv pysearch ```
+``` python3.10 -m venv .venv ```
 
 ### Activate virtual environment (from parent folder)
 
-```Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass```   &
+``` source .venv/bin/activate ``` (Linux/Mac)
 
-``` .\search_engine\Scripts\activate ``` or
+```Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass```   & ``` .\.venv\Scripts\activate ``` (Windows)
 
-``` source pysearch/bin/activate ```
 
 ### Install PyTorch (  lightweight CPU version only )
 

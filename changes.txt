@@ -1,0 +1,2 @@
+Phase 1 : 
+just creating a separate embedding service [now api_service & embedding_service]

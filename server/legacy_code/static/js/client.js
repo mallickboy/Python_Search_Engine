@@ -1,5 +1,5 @@
 console.log(
-    "Version 2.0 of 'Python Search Engine' has been developed by Tamal Mallick.\n\n" +
+    "Version 3.0 of 'Python Search Engine' has been developed by Tamal Mallick.\n\n" +
     "This version builds upon the original 'Python Search Engine' project, which was created by Tamal Mallick, Sushanta Das, and Subham Manna."
   );  
   
@@ -133,9 +133,18 @@ function populateMainDiv(searchResult) {
         link=item['link']
         desc = item['desc']
         const url = new URL(Object.values(item)[1]);
-        const domainParts = url.hostname.split('.');
-
+        const domainParts = url.hostname;
+        const showDomain = domainParts || url.hostname;
+        
         const baseURL = url.origin;
+
+        const firstPathPart = url.pathname.split('/').filter(Boolean)[0] || '';
+
+        // Construct a decorated display string:
+        const decoratedLink = firstPathPart
+        ? `${showDomain}/${firstPathPart}`
+        : showDomain;
+
         //console.log(baseURL);
         /*const fullURL = new URL("favicon.ico", baseURL);
         console.log(fullURL);
@@ -148,25 +157,14 @@ function populateMainDiv(searchResult) {
 
         const childDivElement = document.createElement("div");
 
-        /*childDivElement.innerHTML = `<br>
-
-            <a href="${Object.values(item)[0]}">            
-            <div style="background: url(${googleFaviconGrabber+domain[2]}) center left no-repeat; padding: 5px 5px 5px 30px; text-decoration: none; font-color: black;">
-            ${domainParts[1]} <br>
-            ${Object.values(item)[0]}
-            </div>
-            <h5>${Object.values(item)[1]}</h5>
-            </a>
-            ${Object.values(item)[2]}
-        `;*/
 
         childDivElement.innerHTML = `<br>
             <div class="search-result-element">       
                 <div class="flex-container">
                     <div> <a href="${link}" class="icon" target="_blank"> <img src="${googleFaviconGrabber+domain[2]}"> </a> </div>
                     <div>
-                        <div> <a href="${link}" class="domain" target="_blank"> ${domainParts[1]} </a> </div>
-                        <div> <a href="${link}" class="link" target="_blank"> ${link} </a> </div>
+                        <div> <a href="${link}" class="domain" target="_blank"> ${domainParts} </a> </div>
+                        <div> <a href="${link}" class="link" target="_blank"> ${decoratedLink} </a> </div>
                     </div>
                 </div>
                 <div class="heading-div">

@@ -1,0 +1,5 @@
+python
+pylint
+pygame
+fastapi
+pypi
