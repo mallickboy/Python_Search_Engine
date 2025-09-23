@@ -10,7 +10,8 @@
 
 - [x] Create separate embedding service
 - [x] Explore and benchmark other sentence transformer models for later update
-- [ ] Add separate search service
+- [x] Add separate search service
+- [x] Implement persistent Pinecone index that supports high speed & automatic recovery
 - [ ] Create user handler
 
 ### Phase 2
