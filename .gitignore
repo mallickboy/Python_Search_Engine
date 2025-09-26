@@ -6,3 +6,6 @@
 dev_worker
 *.env
 ignore*
+
+## Ignore digital assets
+*favicon.ico
