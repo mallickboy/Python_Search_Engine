@@ -10,34 +10,21 @@ const INPUT_BOX = document.getElementById("inputBox");
 const SEARCH_BTN = document.getElementById("searchBtn");
 const MAIN_DIV = document.getElementById("mainDiv");
 
-const SEARCH_ENDPOINT = "/search";
+const SEARCH_ENDPOINT = "/search";  // relative URL
 const SEARCH_QUERY_PARAMETER_KEY = "q";
-const EXIT_ENDPOINT = "/exit";
+const EXIT_ENDPOINT = "/exit";       // relative URL
 const GOOGLE_FAVICON_URL = "https://www.google.com/s2/favicons?domain=";
-
-// ----------------------
-// Cache
-// ----------------------
-const searchCache = {};  // { query: results }
 
 // ----------------------
 // Core Functions
 // ----------------------
 async function fetchSearchResults(query) {
-  // Return cached results if present
-  if (searchCache[query]) {
-      console.log("Using cached results for:", query);
-      return searchCache[query];
-  }
-
   skeletonLoader();
   const queryUrl = `${SEARCH_ENDPOINT}?${SEARCH_QUERY_PARAMETER_KEY}=${encodeURIComponent(query)}`;
   console.log("Fetching:", queryUrl);
   const response = await fetch(queryUrl, { method: "GET" });
   if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-  const results = await response.json();
-  searchCache[query] = results;  // store in cache
-  return results;
+  return await response.json();
 }
 
 function skeletonLoader() {
@@ -104,25 +91,20 @@ function populateResults(results) {
 // ----------------------
 // Event Handlers
 // ----------------------
-async function handleSearch(query, pushState = true) {
-  if (pushState) {
-      const newUrl = `${window.location.pathname}?${SEARCH_QUERY_PARAMETER_KEY}=${encodeURIComponent(query)}`;
-      window.history.pushState({ query }, "", newUrl);
-  }
+function handleSearch(query) {
+  if (!query) return;
 
-  if (!query) {
-      // Clear results if no query
-      MAIN_DIV.innerHTML = "";
-      return;
-  }
+  // Update URL in browser
+  const newUrl = `${window.location.pathname}?q=${encodeURIComponent(query)}`;
+  window.history.pushState({ path: newUrl }, "", newUrl);
 
-  try {
-      const results = await fetchSearchResults(query);
-      populateResults(results);
-  } catch (err) {
-      console.error("Error:", err);
-      MAIN_DIV.innerHTML = `<p style="color:red;">Error fetching results: ${err.message}</p>`;
-  }
+  console.log("Searching:", query);
+  fetchSearchResults(query)
+      .then(populateResults)
+      .catch(err => {
+          console.error("Error:", err);
+          MAIN_DIV.innerHTML = `<p style="color:red;">Error fetching results: ${err.message}</p>`;
+      });
 }
 
 // Enter key
@@ -138,22 +120,14 @@ SEARCH_BTN.addEventListener("click", () => {
   handleSearch(INPUT_BOX.value);
 });
 
-// Load query from URL params on first load
+// Load query from URL params
 window.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
-  const q = params.get(SEARCH_QUERY_PARAMETER_KEY);
+  const q = params.get("q");
   if (q) {
       INPUT_BOX.value = q;
-      handleSearch(q, false);
+      handleSearch(q);
   }
-});
-
-// Handle browser back/forward
-window.addEventListener("popstate", (event) => {
-    const params = new URLSearchParams(window.location.search);
-    const q = params.get(SEARCH_QUERY_PARAMETER_KEY) || "";
-    INPUT_BOX.value = q;
-    handleSearch(q, false); // false = don't push state again
 });
 
 // Notify server on exit

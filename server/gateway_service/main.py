@@ -1,7 +1,8 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
-from fastapi.templating import Jinja2Templates 
+from fastapi.templating import Jinja2Templates
+from search_pipeline import perform_search
 
 app = FastAPI()
 
@@ -11,7 +12,11 @@ templates= Jinja2Templates(directory="templates")
 
 @app.get('/', response_class = HTMLResponse)
 async def home(req: Request):
-    return templates.TemplateResponse("ignore.html", {"request": req} )
+    return templates.TemplateResponse("index.html", {"request": req} )
+
+@app.get('/search')
+async def search(q: str):
+    return await perform_search(request= q)
 
 if __name__ == "__main__":
     import uvicorn
