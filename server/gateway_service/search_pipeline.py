@@ -1,5 +1,18 @@
 import random
-def random_response(count: int = 2):
+import asyncio
+from config import (
+    GATEWAY_SERVICE_PORT,
+    GATEWAY_SERVICE_ROUTE,
+    EMBEDDING_SERVICE_PORT,
+    EMBEDDING_SERVICE_ROUTE,
+    SEARCH_SERVICE_PORT,
+    SEARCH_SERVICE_ROUTE,
+    MAX_CONCURRENT_TASKS
+)
+
+SEMAPHORE = asyncio.Semaphore(MAX_CONCURRENT_TASKS)
+
+async def random_response(count: int = 3):
     return random.choices(
         [
         {"title": "Array in java", "link": "https://www.javatpoint.com/array-in-java", "desc": "Array in java"},
@@ -12,5 +25,13 @@ def random_response(count: int = 2):
     )
 
 async def perform_search(request):
-    print(request)
-    return random_response(3)
+    print((
+    GATEWAY_SERVICE_PORT,
+    GATEWAY_SERVICE_ROUTE,
+    EMBEDDING_SERVICE_PORT,
+    EMBEDDING_SERVICE_ROUTE,
+    SEARCH_SERVICE_PORT,
+    SEARCH_SERVICE_ROUTE
+))  
+    async with SEMAPHORE:
+        return await random_response()

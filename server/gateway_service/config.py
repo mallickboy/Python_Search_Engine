@@ -1,0 +1,17 @@
+import os
+from pathlib import Path
+from dotenv import load_dotenv
+
+env_path = Path("../.env")
+
+load_dotenv(dotenv_path= env_path)
+
+GATEWAY_SERVICE_PORT = int(os.getenv("GATEWAY_SERVICE_PORT"))
+GATEWAY_SERVICE_ROUTE = os.getenv("GATEWAY_SERVICE_ROUTE")
+GATEWAY_SERVICE_CONCURRENCY = int(os.getenv("GATEWAY_SERVICE_CONCURRENCY"))
+EMBEDDING_SERVICE_PORT = int(os.getenv("EMBEDDING_SERVICE_PORT"))
+EMBEDDING_SERVICE_ROUTE = os.getenv("EMBEDDING_SERVICE_ROUTE")
+SEARCH_SERVICE_PORT = int(os.getenv("SEARCH_SERVICE_PORT"))
+SEARCH_SERVICE_ROUTE = os.getenv("SEARCH_SERVICE_ROUTE")
+
+MAX_CONCURRENT_TASKS = GATEWAY_SERVICE_CONCURRENCY

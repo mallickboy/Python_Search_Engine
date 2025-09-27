@@ -3,6 +3,10 @@ from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from search_pipeline import perform_search
+from config import (
+    GATEWAY_SERVICE_PORT,
+    GATEWAY_SERVICE_ROUTE
+)
 
 app = FastAPI()
 
@@ -14,10 +18,10 @@ templates= Jinja2Templates(directory="templates")
 async def home(req: Request):
     return templates.TemplateResponse("index.html", {"request": req} )
 
-@app.get('/search')
+@app.get(GATEWAY_SERVICE_ROUTE)
 async def search(q: str):
     return await perform_search(request= q)
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port= 4000)
+    uvicorn.run(app, host="0.0.0.0", port=GATEWAY_SERVICE_PORT)
