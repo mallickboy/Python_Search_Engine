@@ -12,6 +12,7 @@
 - [x] Explore and benchmark other sentence transformer models for later update
 - [x] Add separate search service
 - [x] Implement persistent Pinecone index that supports high speed & automatic recovery
+- [x] Implement search with URL sync and cached results in frontend
 - [ ] Create user handler
 
 ### Phase 2
