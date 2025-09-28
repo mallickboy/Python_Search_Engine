@@ -67,6 +67,15 @@ def main():
 
     services = [gateway, embedding, search]
 
+    def signal_handler(sig, frame):
+        print(f"\nSignal {sig} received. Shutting down services...\n")
+        for service in services:
+            service.stop()
+        exit(0)
+
+    signal.signal(signal.SIGINT, signal_handler)
+    signal.signal(signal.SIGTERM, signal_handler)
+
     try:
         # Start all services
         gateway.start(workers=4, timeout=90)
