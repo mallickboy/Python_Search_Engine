@@ -13,7 +13,9 @@
 - [x] Add separate search service
 - [x] Implement persistent Pinecone index that supports high speed & automatic recovery
 - [x] Implement search with URL sync and cached results in frontend
-- [ ] Create user handler
+- [x] Create user handler
+- [ ] Use linting to ensure standard practices
+- [ ] Benchmark current performance
 
 ### Phase 2
 
