@@ -1,5 +1,6 @@
 import asyncio
 import httpx
+import ujson
 from config import (
     EMBEDDING_SERVICE_PORT,
     EMBEDDING_SERVICE_ROUTE,
@@ -18,8 +19,21 @@ def _get_client():
     """Re-use existing else rebuild httpx client"""
     global CLIENT
     if CLIENT is None or (hasattr(CLIENT, 'is_closed') and CLIENT.is_closed):
-        CLIENT = httpx.AsyncClient()
+        CLIENT = httpx.AsyncClient(
+            http2=True,
+            limits=httpx.Limits(
+                max_keepalive_connections=max(MAX_CONCURRENT_TASKS//5, 5),  # 20% idle connections
+                max_connections=int(MAX_CONCURRENT_TASKS * 1.2)  # 20% more than max concurrency
+            ),
+            timeout=10.0
+        )
     return CLIENT
+
+async def stop_httpx_client():
+    global CLIENT
+    if CLIENT is not None:
+        await CLIENT.aclose()
+        CLIENT = None
 
 async def pipeline(query):
     global CLIENT
@@ -28,12 +42,12 @@ async def pipeline(query):
         client = _get_client()
         r = await client.get(f"{EMBEDDING_SERVICE_URL}?sentence={query}")
         r.raise_for_status()
-        vector_response = r.json()
+        vector_response = ujson.loads(r.text)
         vector = vector_response.get("vector", [])
 
         r2 = await client.post(SEARCH_SERVICE_URL, json={"query_vector": vector})
         r2.raise_for_status()
-        search_response = r2.json()
+        search_response = ujson.loads(r2.text)
         return search_response
     except Exception as e:
         print(f"Pipeline error: {e}")

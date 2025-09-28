@@ -2,13 +2,21 @@ from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from search_pipeline import perform_search
+from contextlib import asynccontextmanager
+from search_pipeline import perform_search, stop_httpx_client
 from config import (
     GATEWAY_SERVICE_PORT,
     GATEWAY_SERVICE_ROUTE
 )
 
-app = FastAPI()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup logic 
+    yield
+    # Shutdown logic
+    await stop_httpx_client()
+
+app = FastAPI(lifespan=lifespan)
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
