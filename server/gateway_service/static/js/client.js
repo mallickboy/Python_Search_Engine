@@ -25,6 +25,7 @@ const searchCache = {};  // { query: results }
 // ----------------------
 async function fetchSearchResults(query) {
   // Return cached results if present
+  query = query.replace(/\s+/g, ' ').trim()  // compact query to reduce unnecessory req
   if (searchCache[query]) {
       console.log("Using cached results for:", query);
       return searchCache[query];
@@ -105,6 +106,7 @@ function populateResults(results) {
 // Event Handlers
 // ----------------------
 async function handleSearch(query, pushState = true) {
+  query = query.replace(/\s+/g, ' ').trim() // compact query to reduce unnecessory req
   if (pushState) {
       const newUrl = `${window.location.pathname}?${SEARCH_QUERY_PARAMETER_KEY}=${encodeURIComponent(query)}`;
       window.history.pushState({ query }, "", newUrl);
