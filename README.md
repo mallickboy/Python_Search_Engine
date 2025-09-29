@@ -14,22 +14,35 @@ Python Search Engine 3.0 Server setup
                    ↓
            [Go Backend → User]
 
+## Compliant testing and structuring the codebase  
+
+- Used `black .` for formatting.  
+- Used `flake8 .` to fix line lengths, whitespace, and style issues.  
+- Used `pylint main.py` for code quality scoring and made necessary fixes to reach a score of 10/10.
+- Used `mypy main.py` for static type checking.  
+- Used `pydocstyle main.py` to verify docstring compliance.
+- Fixed all compliance issues and achieved 100% clean results across all tools.
+
 ### Pull the code
 
-``` mkdir pysearch  ```
-``` cd pysearch  ```
+``` mkdir pysearch ```
+``` cd pysearch ```
 ``` git clone https://github.com/mallickboy/Python_Search_Engine.git ```
 ``` cd Python_Search_Engine ```
 ``` git checkout version3.0 ```
 ``` cd server ```
 
 ### Download appropriate python 3.10 version
-Download and install from 
+
+Download and install from
+
 ```bash
 https://www.python.org/downloads/source/                (or)
 https://www.python.org/ftp/python/3.10.18/Python-3.10.18.tgz
 ```
+
 Extract & install
+
 ```bash
 tar xzf Python-3.10.18.tgz
 cd Python-3.10.18
@@ -37,7 +50,8 @@ sudo ./configure --enable-optimizations
 sudo ./configure --enable-optimizations
 python3.10 --version
 ```
-### Create virtual environment 
+
+### Create virtual environment
 
 ``` python3.10 -m venv .venv ```
 
@@ -47,14 +61,13 @@ python3.10 --version
 
 ```Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass```   & ``` .\.venv\Scripts\activate ``` (Windows)
 
-
 ### Install PyTorch (  lightweight CPU version only )
 
-``` pip install torch --index-url https://download.pytorch.org/whl/cpu  ```
+``` pip install torch --index-url https://download.pytorch.org/whl/cpu ```
 
 ### Install required libraries
 
-``` pip install -r requirements.txt  ```
+``` pip install -r requirements.txt ```
 
 ### Open firewall & update inbound port 8000 in Azure
 
@@ -64,12 +77,11 @@ python3.10 --version
 
 ``` sudo ufw status ```
 
-### Run and Test 
+### Run and Test
 
-``` python app.py  ```
+``` python app.py ```
 
 Visit http://{your_server_ip}:8000
-
 
 <h2 align="center">
 Adding SSL, NGINX and deployment using GUNICORNN
@@ -109,28 +121,26 @@ Add New record in Advanced DNS in domain provider
 
 ### Set-Up NGINX
 
-``` sudo nano /etc/nginx/sites-available/pysearch.mallickboy.com  ```  (copy contents of server_setup/pysearch.mallickboy.com)
+``` sudo nano /etc/nginx/sites-available/pysearch.mallickboy.com ```  (copy contents of server_setup/pysearch.mallickboy.com)
 
-``` sudo nano /etc/nginx/sites-available/default  ```  (copy contents of server_setup/default)
+``` sudo nano /etc/nginx/sites-available/default ```  (copy contents of server_setup/default)
 
 ``` sudo ln -s /etc/nginx/sites-available/pysearch.mallickboy.com /etc/nginx/sites-enabled/ ```  
 
-``` sudo nginx -t  ```
+``` sudo nginx -t ```
 
 ``` sudo systemctl reload nginx ```
 
 ``` sudo systemctl restart nginx ```
 
-### Visit 
+### Visit
 
-[ https://pysearch.mallickboy.com ](https://pysearch.mallickboy.com)
-
-
+[https://pysearch.mallickboy.com](https://pysearch.mallickboy.com)
 
 <h1 align="center">
 Output View
 </h1>
-**Pinecone Side Vectors** 
+**Pinecone Side Vectors**
 ![pinecone](https://github.com/user-attachments/assets/0bd8a37f-510c-471e-9206-76135b905bd1)
 
 **Client Side Search Results :**
@@ -140,8 +150,6 @@ Output View
 ![Screenshot 2024-04-02 210855](https://github.com/user-attachments/assets/11d6e250-1818-4ec9-aeaf-4e146a0fcb55)
 
 ![Screenshot 2024-04-02 210658](https://github.com/user-attachments/assets/4a87cff9-89ff-42fc-887b-ea1a1aee1765)
-
-
 
 **Server Side Messages :**
 
@@ -153,7 +161,7 @@ Output View
 Design and Discussion
 </h1>
 
-**Group Members:** Tamal Mallick , Sushanta Das , Suvam Manna 
+**Group Members:** Tamal Mallick , Sushanta Das , Suvam Manna
 
 **Problem Description**:
 
@@ -215,13 +223,11 @@ each receive operation through socket.
 
 **3) Searching some query**
 
-i) User will visit the link at which server is running (like <http://192.168.29.37:8080/>[).](http://192.168.29.37:8080/)[ ](http://192.168.29.37:8080/)A
+i) User will visit the link at which server is running (like <http://192.168.29.37:8080/>[).](http://192.168.29.37:8080/)[](http://192.168.29.37:8080/)A
 
 webpage will open which has input box and search button. In Secure mode client will receive
 
 public key of server.
-
-
 
 ii) When user types some search query and hits submit button, client will send the query to the
 
@@ -234,7 +240,6 @@ iii) Now server will call a function for searching on vector database and finall
 search results to the client.
 
 iv) Results will be displayed in the client’s webpage.
-
 
 **Future Work**
 
@@ -261,5 +266,3 @@ programming, and cryptographic protocols, this search engine delivers not only s
 results but also ensures the security of user interactions. Also, implementation of multithreading and query-
 
 based client holding allow us to save the resources and serve large number of clients at a time.
-
-
