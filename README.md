@@ -2,6 +2,10 @@
 Python Search Engine 3.0 Server setup
 </h1>
 
+# Demo AI Summary
+![Image 1](https://github.com/user-attachments/assets/5786599c-235b-4d53-987e-b7cecd4e017e)
+![Image 2](https://github.com/user-attachments/assets/14fcb57f-8630-4d32-b0fb-77d97190a9ef)
+
 # New plan for Version 3
 
 [User] → [Go Backend Pod(s)]
