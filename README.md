@@ -6,17 +6,8 @@ Python Search Engine 3.0 Server setup
 ![Image 1](https://github.com/user-attachments/assets/5786599c-235b-4d53-987e-b7cecd4e017e)
 ![Image 2](https://github.com/user-attachments/assets/14fcb57f-8630-4d32-b0fb-77d97190a9ef)
 
-# New plan for Version 3
-
-[User] → [Go Backend Pod(s)]
-                   ↓
-         [Redis Cache (StatefulSet)]
-                   ↔
-         [FastAPI Embedding DaemonSet (1 per Node)]
-                   ↓
-               [Pinecone / Local Vector DB / Kafka]
-                   ↓
-           [Go Backend → User]
+# New plan for Version 3+
+![Image 3]([https://github.com/user-attachments/assets/14fcb57f-8630-4d32-b0fb-77d97190a9ef](https://github.com/user-attachments/assets/e31d9695-6563-4b5e-9f5c-2fe831283a84))
 
 ## Compliant testing and structuring the codebase  
 
