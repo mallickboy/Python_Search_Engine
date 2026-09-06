@@ -1,0 +1,12 @@
+sudo systemctl daemon-reload
+
+sudo systemctl enable embedding search gateway
+sudo systemctl restart embedding search gateway
+sudo systemctl status embedding search gateway
+
+### AI Summary
+![Image 1](https://github.com/user-attachments/assets/5786599c-235b-4d53-987e-b7cecd4e017e)
+![Image 2](https://github.com/user-attachments/assets/14fcb57f-8630-4d32-b0fb-77d97190a9ef)
+
+<img width="1920" height="1168" alt="Image" src="https://github.com/user-attachments/assets/5786599c-235b-4d53-987e-b7cecd4e017e" />
+<img width="1920" height="1168" alt="Image" src="https://github.com/user-attachments/assets/14fcb57f-8630-4d32-b0fb-77d97190a9ef" />

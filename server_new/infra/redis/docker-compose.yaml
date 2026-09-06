@@ -1,0 +1,45 @@
+services:
+  # 1. VECTOR CACHE (150MB)
+  redis-vectors:
+    image: redis:7.2-alpine
+    container_name: pysearch-vectors
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./data/vectors:/data
+    command: >
+      redis-server 
+      --maxmemory 150mb 
+      --maxmemory-policy allkeys-lfu
+      --appendonly yes
+    restart: always
+
+  # 2. Response CACHE (300MB)
+  redis-response:
+    image: redis:7.2-alpine
+    container_name: pysearch-response
+    ports:
+      - "6380:6379"
+    volumes:
+      - ./data/response:/data
+    command: >
+      redis-server 
+      --maxmemory 300mb 
+      --maxmemory-policy allkeys-lfu
+      --appendonly yes
+    restart: always
+
+  # 3. TRACKING DB (200MB)
+  redis-tracking:
+    image: redis:7.2-alpine
+    container_name: pysearch-tracking
+    ports:
+      - "6381:6379"
+    volumes:
+      - ./data/tracking:/data
+    command: >
+      redis-server 
+      --maxmemory 50mb 
+      --maxmemory-policy noeviction
+      --appendonly yes
+    restart: always

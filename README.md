@@ -10,9 +10,9 @@ Python Search Engine 3.0 Server setup
                    ↔
          [FastAPI Embedding DaemonSet (1 per Node)]
                    ↓
-               [Pinecone / Local Vector DB / Kafka]
+             [Pinecone / Local Vector DB / Kafka]
                    ↓
-           [Go Backend → User]
+                 [Go Backend → User]
 
 ## Compliant testing and structuring the codebase  
 

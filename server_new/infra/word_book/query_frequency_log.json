@@ -1,0 +1,38 @@
+{
+  "tuple": {
+    "query": "tuple",
+    "count": 33
+  },
+  "python tuple": {
+    "query": "python tuple",
+    "count": 3
+  },
+  "list": {
+    "query": "list",
+    "count": 2
+  },
+  "array list": {
+    "query": "array list",
+    "count": 1
+  },
+  "list tuple": {
+    "query": "list tuple",
+    "count": 1
+  },
+  "reserve python array": {
+    "query": "reserve python array",
+    "count": 1
+  },
+  "python tuple list": {
+    "query": "python tuple list",
+    "count": 2
+  },
+  "reverse array": {
+    "query": "reverse array",
+    "count": 1
+  },
+  "hi": {
+    "query": "hi",
+    "count": 1
+  }
+}

@@ -1,0 +1,178 @@
+# ==========================================
+# 1. VECTOR CACHE (150MB, allkeys-lru)
+# ==========================================
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: redis-vectors-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-vectors-service
+spec:
+  selector:
+    app: redis-vectors
+  ports:
+    - port: 6379
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-vectors
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis-vectors
+  template:
+    metadata:
+      labels:
+        app: redis-vectors
+    spec:
+      containers:
+      - name: redis
+        image: redis:7.2-alpine
+        command: 
+          - "redis-server"
+          - "--maxmemory"
+          - "150mb"
+          - "--maxmemory-policy"
+          - "allkeys-lru"
+          - "--appendonly"
+          - "yes"
+        ports:
+          - containerPort: 6379
+        volumeMounts:
+        - name: redis-data
+          mountPath: /data
+      volumes:
+      - name: redis-data
+        persistentVolumeClaim:
+          claimName: redis-vectors-pvc
+
+---
+# ==========================================
+# 2. RESPONSE CACHE (300MB, allkeys-lru)
+# ==========================================
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: redis-response-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-response-service
+spec:
+  selector:
+    app: redis-response
+  ports:
+    - port: 6379
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-response
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis-response
+  template:
+    metadata:
+      labels:
+        app: redis-response
+    spec:
+      containers:
+      - name: redis
+        image: redis:7.2-alpine
+        command: 
+          - "redis-server"
+          - "--maxmemory"
+          - "300mb"
+          - "--maxmemory-policy"
+          - "allkeys-lru"
+          - "--appendonly"
+          - "yes"
+        ports:
+          - containerPort: 6379
+        volumeMounts:
+        - name: redis-data
+          mountPath: /data
+      volumes:
+      - name: redis-data
+        persistentVolumeClaim:
+          claimName: redis-response-pvc
+
+---
+# ==========================================
+# 3. TRACKING DB (50MB, allkeys-lru)
+# ==========================================
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: redis-tracking-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 300Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-tracking-service
+spec:
+  selector:
+    app: redis-tracking
+  ports:
+    - port: 6379
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-tracking
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis-tracking
+  template:
+    metadata:
+      labels:
+        app: redis-tracking
+    spec:
+      containers:
+      - name: redis
+        image: redis:7.2-alpine
+        command: 
+          - "redis-server"
+          - "--maxmemory"
+          - "50mb"
+          - "--maxmemory-policy"
+          - "volatile-lru"
+          - "--appendonly"
+          - "yes"
+        ports:
+          - containerPort: 6379
+        volumeMounts:
+        - name: redis-data
+          mountPath: /data
+      volumes:
+      - name: redis-data
+        persistentVolumeClaim:
+          claimName: redis-tracking-pvc

@@ -1,0 +1,84 @@
+msmarco-distilbert-base-v3
+
+i7 12700h w1 (2000p x 3 b)
+Benchmark: 100%|██████████| 6000/6000 [01:22<00:00, 72.73req/s, 6000 ✓ / 0 ✗] 
+Stats:
+  Total Success : 6000
+  Total Failures: 0
+  Average Latency: 13.9053 sec
+  Min Latency    : 0.1832 sec
+  Max Latency    : 28.4654 sec
+----------------------------------------------------------------------------------------
+
+i7 12700h w4 (2000p x 3 b) conn 1024
+Benchmark: 100%|██████████| 6000/6000 [00:54<00:00, 110.52req/s, 6000 ✓ / 0 ✗]
+Stats:
+  Total Success : 6000
+  Total Failures: 0
+  Average Latency: 9.3661 sec
+  Min Latency    : 0.3539 sec
+  Max Latency    : 18.7909 sec
+----------------------------------------------------------------------------------------
+
+pisever w4 (200p x 3 b) conn 1024
+
+Benchmark: 100%|██████████| 600/600 [02:14<00:00,  4.45req/s, 600 ✓ / 0 ✗]
+Stats:
+  Total Success : 600
+  Total Failures: 0
+  Average Latency: 26.7717 sec
+  Min Latency    : 4.5880 sec
+  Max Latency    : 52.3602 sec
+----------------------------------------------------------------------------------------
+
+
+pisever w1 (200p x 3 b) conn 1024
+
+msmarco-distilbert-base-v3
+Benchmark: 100%|██████████| 600/600 [01:33<00:00,  6.45req/s, 600 ✓ / 0 ✗]
+Stats:
+  Total Success : 600
+  Total Failures: 0
+  Average Latency: 16.0123 sec
+  Min Latency    : 1.0892 sec
+  Max Latency    : 31.1156 sec
+
+
+multi-qa-MiniLM-L6-cos-v1
+Benchmark: 100%|██████████| 600/600 [00:32<00:00, 18.56req/s, 600 ✓ / 0 ✗]
+Stats:
+  Total Success : 600
+  Total Failures: 0
+  Average Latency: 5.5979 sec
+  Min Latency    : 0.4169 sec
+  Max Latency    : 10.9864 sec
+
+
+all-MiniLM-L6-v2
+Benchmark: 100%|██████████| 600/600 [00:31<00:00, 19.24req/s, 600 ✓ / 0 ✗]
+Stats:
+  Total Success : 600
+  Total Failures: 0
+  Average Latency: 5.6495 sec
+  Min Latency    : 0.3188 sec
+  Max Latency    : 11.2361 sec
+
+msmarco-MiniLM-L6-v3 (3x with alsmost good and sometime better cosine similarity )
+Benchmark: 100%|██████████| 600/600 [00:29<00:00, 20.16req/s, 600 ✓ / 0 ✗]
+Stats:
+  Total Success : 600
+  Total Failures: 0
+  Average Latency: 5.1602 sec
+  Min Latency    : 0.3379 sec
+  Max Latency    : 9.9737 sec
+
+all-mpnet-base-v2
+Benchmark: 100%|██████████| 600/600 [04:00<00:00,  2.49req/s, 600 ✓ / 0 ✗]
+Stats:
+  Total Success : 600
+  Total Failures: 0
+  Average Latency: 41.6290 sec
+  Min Latency    : 2.4585 sec
+  Max Latency    : 80.8202 sec
+
+# Use current one till v2 phase  4 then from phase 4 use msmarco-MiniLM-L6-v3 
